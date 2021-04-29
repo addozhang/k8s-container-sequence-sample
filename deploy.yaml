@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: sample
+  name: sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: sample
+    spec:
+      containers:
+      - image: addozhang/k8s-container-sequence-sidecar:latest
+        name: sidecar
+        imagePullPolicy: IfNotPresent
+        lifecycle:
+          postStart:
+            exec:
+              command:
+                - /entrypoint
+                - wait
+      - image: busybox:latest
+        name: app
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh","-c"]
+        args: ["date; echo 'app container started'; tail -f /dev/null"]
