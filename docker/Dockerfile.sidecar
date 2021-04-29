@@ -1,0 +1,22 @@
+#build stage
+FROM golang as builder
+
+ENV GO111MODULE=on
+ENV GOPROXY=https://goproxy.io
+
+WORKDIR /app
+
+COPY go.mod .
+RUN go mod download
+
+COPY . .
+
+RUN mkdir bin && CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -x -o ./bin ./cmd/entrypoint ./cmd/sidecar
+
+
+#image stage
+#FROM scratch
+FROM alpine
+COPY --from=builder /app/bin/* /
+
+CMD ["/sidecar"]
