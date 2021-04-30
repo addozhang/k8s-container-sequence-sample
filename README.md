@@ -17,4 +17,4 @@ Running command `make build` will output an image as sidecar image.
 
 Run command `kubectl apply -f deploy.yaml`. Before this, you can use `stern` to monitor pod log.
 
-More details can be located [here]().
+More details can be located [here](https://mp.weixin.qq.com/s/8DqF_N_fjiM9AOouvddvgA).
